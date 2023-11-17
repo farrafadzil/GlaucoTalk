@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "200785318528",
+    "project_id": "apptalk-80117",
+    "storage_bucket": "apptalk-80117.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200785318528:android:9782ad48861b56465f0c65",
+        "android_client_info": {
+          "package_name": "com.example.apptalk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXa5mTk7sd5sSMITKHo9HdJVJvcxmEyAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
