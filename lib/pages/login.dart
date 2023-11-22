@@ -18,6 +18,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   Color myCustomColor = const Color(0xFF00008B);
+  Color myTextColor = const Color(0xF6F5F5FF);
 
 
   // text editing controllers
@@ -62,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
               child: const Text('OK'),
               onPressed: () {
                 Navigator.pop(context);
-                // pop loading circle after show error message
+                // pop loading circle after show error messageg
                 Navigator.pop(context);
               },
             ),
@@ -95,7 +96,8 @@ class _LoginPageState extends State<LoginPage> {
                 const Text(
                   'Welcome back !',
                   style: TextStyle(
-                    color: Colors.white,
+                    //color: Colors.white,
+                    color: Color(0xF6F5F5FF),
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                   ),
@@ -150,8 +152,8 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Expanded(
                         child: Divider(
-                          thickness: 0.5,
-                          color: Colors.deepOrange[400],
+                          thickness: 1.5,
+                          color: Colors.deepOrange,
                         ),
                       ),
                       const Padding(
@@ -166,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       Expanded(
                         child: Divider(
-                          thickness: 0.5,
+                          thickness: 1.5,
                           color: Colors.deepOrange[400],
                         ),
                       ),

@@ -20,6 +20,8 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   Color myCustomColor = const Color(0xFF00008B);
+  Color myTextColor = const Color(0xF6F5F5FF);
+
 
   //text controllers
   final emailController = TextEditingController();
@@ -111,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
              // Allign everything to the middle of the screen
              mainAxisAlignment: MainAxisAlignment.center,
              children: [
-               const SizedBox(height:50),
+               const SizedBox(height:10),
                // logo
                Image.asset("assets/logo.png",
                  width: 200,
@@ -121,11 +123,12 @@ class _RegisterPageState extends State<RegisterPage> {
                const SizedBox(height: 2),
                const Text("Hi There!",
                  style: TextStyle(
-                   fontSize: 32,
+                   fontSize: 24,
                    color: Colors.white,
+                   fontWeight: FontWeight.bold,
                  ),
                ),
-               const SizedBox(height:40),
+               const SizedBox(height:20),
                
                // email textfield
                MyTextField(
@@ -141,10 +144,10 @@ class _RegisterPageState extends State<RegisterPage> {
                    hintText: 'Password', // hint text
                    obscureText: true //akan jadi hidden.
                ),
-               const SizedBox(height: 10),
+               const SizedBox(height: 20),
                
                //confirm password 
-               const SizedBox(height: 20),
+               //const SizedBox(height: 20),
                MyTextField(
                    controller: confirmPasswordController,
                    hintText: 'Confirm Password', // hint text
@@ -166,7 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
                  children: [
                    Expanded(
                        child: Divider(
-                         thickness: 0.5,
+                         thickness: 1.5,
                          color: Colors.deepOrange,
                        ),
                    ),
@@ -175,7 +178,7 @@ class _RegisterPageState extends State<RegisterPage> {
                    child: Text(
                      'Or continue with',
                      style: TextStyle(
-                         color: Colors.lightBlueAccent,
+                         color: Color(0xF6F5F5FF),
                      fontWeight: FontWeight.bold,
                      fontSize: 20),
                    ),
@@ -183,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                    Expanded(
                        child: Divider(
-                         thickness: 0.5,
+                         thickness: 1.5,
                          color: Colors.deepOrange,
                        ),
                    ),

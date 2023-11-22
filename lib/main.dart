@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:apptalk/pages/login.dart';
+import 'package:camera/camera.dart';
 
 
 void main() async {
@@ -13,6 +14,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+ // final CameraDescription camera;
+
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
