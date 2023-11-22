@@ -1,3 +1,4 @@
+import 'package:apptalk/pages/home_page.dart';
 import 'package:apptalk/pages/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -140,7 +141,12 @@ class _LoginPageState extends State<LoginPage> {
                 // log in button
                 MyButton(
                   text: "Log In",
-                  onTap: userLogin,
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage(),)
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 15),

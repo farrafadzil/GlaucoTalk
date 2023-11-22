@@ -1,4 +1,7 @@
+import 'package:apptalk/camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
+import 'package:apptalk/camera/DisplayPictureScreen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -6,8 +9,53 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-Color myCustomColor = const Color(0xFF00008B);
+
+
 class _HomePageState extends State<HomePage> {
+Color myCustomColor = const Color(0xFF00008B);
+
+  late CameraDescription? firstCamera;
+
+  get floatingActionButton => null;
+
+ // CameraDescription? get firstCamera => null;
+
+//Function to navigate to TakePictureScreen
+
+  void navigateToTakePictureScreen(BuildContext context, CameraDescription camera){
+
+   if(camera != null){
+     Navigator.push(
+         context,
+         MaterialPageRoute(builder: (context) => TakePictureScreen(camera: camera)
+         ),
+     );
+   } else{
+     // Handle the case when there is no camera
+     ScaffoldMessenger.of(context).showSnackBar(
+         const SnackBar(
+           content: Text('No Camera Available.'),
+         ),
+     );
+   }
+
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize firstCamera in the initState method
+    _initializeFirstCamera();
+  }
+
+  Future<void> _initializeFirstCamera() async {
+    final cameras = await availableCameras();
+    if (cameras.isNotEmpty) {
+      setState(() {
+        firstCamera = cameras.first;
+      });
+    }
+  }
  // Color myCustomColor = const Color(0xFF00008B);
   // sign user out
   void signOut(){
@@ -25,6 +73,7 @@ class _HomePageState extends State<HomePage> {
           'CHAT',
           style: TextStyle(
         fontSize: 35,
+            color: Colors.white,
           ),
       ),
           actions: [
@@ -41,6 +90,13 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.search,
               size: 24,
               ),
+            ),
+
+            IconButton(
+              onPressed: () {
+                navigateToTakePictureScreen(context, firstCamera!);
+              },
+              icon: const Icon(Icons.camera_alt),
             ),
           ],
       ),
@@ -86,6 +142,9 @@ class _HomePageState extends State<HomePage> {
                 //add more functionality later here
               },
             ),
+
+
+
           ],
         ),
       ),
