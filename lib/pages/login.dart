@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:apptalk/components/square_tile.dart';
 import 'package:apptalk/firebase/auth_service.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -19,7 +20,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final formKey = GlobalKey<FormState>();
   Color myCustomColor = const Color(0xFF00008B);
   Color myTextColor = const Color(0xF6F5F5FF);
   String email ="";
@@ -43,28 +43,49 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
 
-   //final authService = Provider.of<AuthService>(context, listen: false);
+   final authService = Provider.of<AuthService>(context, listen: false);
 
     // try login
     try {
+      await authService.signInWithEmailandPassword(
+          emailController.text,
+          passwordController.text,
+      );
+      /*
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
-      );
+        );
+        */
+
 
       // Saving data to shared preferences after successful login
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('email', emailController.text);
 
+      // Navigate to HomePage after successfully login
+      Navigator.pushReplacement(context,
+      MaterialPageRoute(builder: (context) => HomePage()));
       // pop loading circle before user logged in
       //Navigator.pop(context);
-      // MaterialPageRoute(builder: (context) => const HomePage(),
+      //MaterialPageRoute(builder: (context) =>  HomePage(),);
       // ),
 
 
-    } on FirebaseAuthException {
-      showErrorMessage();
     }
+    catch(e){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            e.toString(),
+          ),
+        ),
+      );
+    }
+    /*
+    on FirebaseAuthException {
+      showErrorMessage();
+    } */
   }
 
   // show error message to user
@@ -103,7 +124,6 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: Center(
           child: Form(
-            key: formKey,
             child: SingleChildScrollView(
               child: Column(
                 // allign everything to the middle of the screen
@@ -233,13 +253,13 @@ class _LoginPageState extends State<LoginPage> {
                             fontWeight: FontWeight.bold),
                       ),
                       onPressed: (){
-                        if (context != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => HomePage(),),
-                          );
-                        }
-                      },
+                        userLogin();
+
+                        Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => HomePage()));
+
+                        },
                     ),
                   ),
 
