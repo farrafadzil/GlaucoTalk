@@ -14,7 +14,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
- // final CameraDescription camera;
+  // final CameraDescription camera;
 
   const MyApp({Key? key}) : super(key: key);
 
@@ -22,10 +22,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-     debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       home:LoginPage(onTap: () {  },),
 
-      //home: LoginPage(),
     );
   }
 }
