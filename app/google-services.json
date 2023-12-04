@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "972428053200",
+    "project_id": "glaucotalk-3f286",
+    "storage_bucket": "glaucotalk-3f286.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972428053200:android:ae6a702a8acaa3a71dacd5",
+        "android_client_info": {
+          "package_name": "com.example.apptalk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA97EO0ANgPuVbnRlHg39DQfhFh1fXps4U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
