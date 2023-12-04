@@ -193,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Name',
+                            '${widget.user.displayName}',
                             style: TextStyle(
                               fontSize: 30,
                               color: Color(0xF6F5F5FF),
@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           SizedBox(height: 8,),
                           Text(
-                            '@Username',
+                            '@${widget.user.displayName}',
                             style: TextStyle(
                               fontSize: 20,
                               color: Color(0xF6F5F5FF),

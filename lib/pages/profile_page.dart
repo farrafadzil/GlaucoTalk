@@ -1,10 +1,13 @@
 import 'package:apptalk/components/circle_avatar.dart';
 import 'package:apptalk/components/my_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  ProfilePage({super.key});
+
+  final user = FirebaseAuth.instance.currentUser!;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -18,6 +21,17 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController dateController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Set the initial value for the nameController
+    nameController.text = widget.user.displayName ?? "";
+    usernameController.text = widget.user.displayName ?? "";
+    passwordController.text = widget.user.email ?? "";
+    // String? image = widget.user.photoURL;
+  }
 
   @override
   Widget build(BuildContext context) {
