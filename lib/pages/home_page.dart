@@ -16,6 +16,7 @@ class HomePage extends StatefulWidget {
 
   final user = FirebaseAuth.instance.currentUser!;
 
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -51,8 +52,6 @@ class _HomePageState extends State<HomePage> {
   late CameraDescription? firstCamera;
 
   get floatingActionButton => null;
-
-  // CameraDescription? get firstCamera => null;
 
 //Function to navigate to TakePictureScreen
 
@@ -224,14 +223,14 @@ class _HomePageState extends State<HomePage> {
                     ),
                     // Display user's email
                     Text(
-                      'Email: ${widget.user.email}',
+                      'Email: ${widget.user.email }',
                       style: const TextStyle(fontSize: 16),
                     ),
                   ],
                 ),
                 Expanded(
                   child: _buildUserList(),
-                ),
+                )
               ],
             ),
             // Content for status tab

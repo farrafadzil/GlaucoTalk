@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:apptalk/components/circle_avatar.dart';
+import 'package:apptalk/models/utils.dart';
 //import 'package:image_downloader/image_downloader.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -17,7 +19,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  Uint8List? _image;
   final imagePicker = ImagePicker();
   String dropdownvalue = "Male"; // replace to stored user's gender
 
@@ -50,6 +54,49 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   } */
 
+  /*
+   selectImage() async{
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+
+  } */
+
+  Future<void> uploadImageAndSave() async{
+    try{
+      final user = _auth.currentUser;
+      if (user == null) {
+        // Handle the case where the user is not signed in.
+        return;
+      }
+      final profile = 'profile_pictures/${user.uid}.png';
+
+      // upload image to cloud storage
+      final UploadTask task = _storage.ref().child(profile).putData(_image!);
+
+      //get dwnld URL of the uploaded image
+      final TaskSnapshot snapshot = await task;
+      final imageUrl = await snapshot.ref.getDownloadURL();
+
+      // update user's firestore doc with the image url
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update({'profilePictureUrl': imageUrl});
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Profile picture uploaded and updated.'),
+        ),
+      );
+    }catch (error) {
+      // Handle errors here.
+      print('Error uploading image: $error');
+    }
+  }
+
+  /*
   Future<File?> _uploadProfilePicture() async{
 
     File? image;
@@ -71,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
             .child('$userId.png');
         // can use the user's ID as a unique identifier
 
-        //upload the image to firebase storage
+        //upload the selected image to firebase storage
         await storageReference.putFile(file);
 
         //get the url of the uploaded image
@@ -99,6 +146,16 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     }
     return image;
+  }
+*/
+  Future<void> pickImage(ImageSource source) async {
+    final pickedImage = await imagePicker.pickImage(source: source);
+    if (pickedImage != null) {
+      final imageBytes = await pickedImage.readAsBytes();
+      setState(() {
+        _image = Uint8List.fromList(imageBytes);
+      });
+    }
   }
 
   @override
@@ -205,18 +262,23 @@ class _ProfilePageState extends State<ProfilePage> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
-              Ink.image(
-                image: AssetImage('lib/images/winter.jpg'),
-                fit: BoxFit.cover,
-                width: 100.0,
-                height: 100.0,
-                child: InkWell(
-                  onTap: () {
-                    _uploadProfilePicture();
-                    // Handle tap event
-                  },
-                ),
-              ),
+                 _image != null ?
+                     CircleAvatar(
+                       radius: 64,
+                         backgroundImage: MemoryImage(_image!),
+                     ) :
+                 Positioned(
+                     bottom: -10,
+                     left: 80,
+                     child: IconButton(
+                       onPressed: (){
+                         pickImage(ImageSource.gallery);
+                       },
+                       icon: const Icon(Icons.add_a_photo),
+                     ),
+                 ),
+
+
                const SizedBox(height: 12),
               // MyTextField(
               //     controller: nameController,
@@ -317,7 +379,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         fontWeight: FontWeight.bold),
                   ),
                   onPressed: (){
-                    updateUserData();
+                   // updateUserData();
+                    uploadImageAndSave();
                     Navigator.pop(context);
                   },
                 ),
