@@ -49,7 +49,11 @@ class _ConversationListState extends State<ConversationList> {
                         children: <Widget>[
                           Text(widget.name, style: TextStyle(fontSize: 16),),
                           SizedBox(height: 6,),
-                          Text(widget.messageText,style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: widget.isMessageRead?FontWeight.bold:FontWeight.normal),),
+                          Text(widget.messageText,
+                            style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey.shade600,
+                                fontWeight: widget.isMessageRead?FontWeight.bold:FontWeight.normal),),
                         ],
                       ),
                     ),

@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService extends ChangeNotifier{
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -23,6 +24,7 @@ class AuthService extends ChangeNotifier{
       _firestore.collection('users').doc(userCredential.user!.uid).set({
         'uid': userCredential.user!.uid,
         'email': email,
+
       }, SetOptions(merge: true));
 
       return userCredential;
@@ -34,19 +36,32 @@ class AuthService extends ChangeNotifier{
 
   //Register
   Future <User?> registerUserWithEmailandPassword(String name, String email,
-      String password) async {
+      String password, String username, DateTime birthday) async {
     try {
+
+      // Check if all required fields are provided
+      if (name.isEmpty || email.isEmpty || password.isEmpty || username.isEmpty) {
+        throw Exception('All fields are required');
+      }
+
       final UserCredential userCredential = await _firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+          );
       //user.uid;
 
       // call our database service to update the user data
-      await DatabaseService().updateUserData(name, email, password);
+      await DatabaseService().updateUserData(name, email, password, username, birthday);
 
       // After creating user, create a new document for the users in user collection
       _firestore.collection('users').doc(userCredential.user!.uid).set({
         'uid': userCredential.user!.uid,
         'email': email,
+        'name': name,
+        'username' : username,
+        'birthday' : birthday,
+
       });
 
       return userCredential.user;
@@ -59,9 +74,12 @@ class AuthService extends ChangeNotifier{
 
   // Google sign in
   Future<User?> signInWithGoogle() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
     try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+
       // begin interactive sign in process
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       // obtain auth details from request
       final GoogleSignInAuthentication googleAuth =
@@ -73,7 +91,7 @@ class AuthService extends ChangeNotifier{
         idToken: googleAuth.idToken,
       );
 
-      //FirebaseUser firebaseUser = (await firebaseAuth.signInWithCredential(credential)).user;
+      // sign in with users credential
       final UserCredential authResult =
       await _firebaseAuth.signInWithCredential(credential);
       final User? user = authResult.user;
@@ -95,6 +113,8 @@ class AuthService extends ChangeNotifier{
       print('Google Sign-In Error: $error');
       return null;
     }
+
+
 
   }
   Future<void> signOut()async{

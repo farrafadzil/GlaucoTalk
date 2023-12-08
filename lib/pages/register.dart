@@ -1,18 +1,17 @@
 import 'package:apptalk/components/square_tile.dart';
 import 'package:apptalk/pages/home_page.dart';
 import 'package:apptalk/pages/login.dart';
+import 'package:apptalk/pages/main_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:apptalk/firebase/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:apptalk/components/my_text_field.dart';
-import 'package:apptalk/components/my_button.dart';
-import 'package:provider/provider.dart';
+
 
 class RegisterPage extends StatefulWidget {
 
   final Function()? onTap;
-  RegisterPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -29,6 +28,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  //final birthdayController = TextEditingController();
+  final dateController = TextEditingController();
+  final usernameController = TextEditingController();
+
 
   // user register method
   void userSignUp() async {
@@ -58,12 +61,16 @@ class _RegisterPageState extends State<RegisterPage> {
           'name': nameController.text,
           'email': emailController.text,
           'password': passwordController.text,
+          'birthday' : dateController.text,
+          'username' : usernameController.text
         });
 
         // show success message or navigate to homepage
         // show error message
-        Navigator.push(context,
-        MaterialPageRoute(builder: (context) =>  HomePage(),
+        Navigator.push(
+          context,
+        MaterialPageRoute(
+          builder: (context) =>  HomePage(),
         ),
         );
 
@@ -99,10 +106,39 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  Future<void> _selectDate() async{
+    DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+
+    if(selected != null){
+      setState(() {
+        dateController.text = selected.toString().split(" ")[0];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: myCustomColor,
+        appBar: AppBar(
+          backgroundColor: myCustomColor, // You can set the color of AppBar
+               elevation: 0, // Removes the shadow under the AppBar
+              leading: IconButton(
+              icon: const Icon(Icons.home, color: Colors.white), // Home Icon
+                 onPressed: () {
+                    Navigator.of(
+                        context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MainMenu(), // Navigate to MainMenu
+                        ));
+                     },
+          ),
+        ),
       // safe area of the screen - guarantee visible to user
       body: SafeArea(
         child: Center(
@@ -132,7 +168,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 20),
 
                 //name textfield
-
                 Padding(
                   padding:  const EdgeInsets.symmetric(horizontal: 25.0),
                   child: TextField(
@@ -156,9 +191,38 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: Colors.white,
                       ),
                     ),
-
                   ),
                 ),
+                const SizedBox(height: 10),
+
+                //confirm password textfield
+                Padding(
+                  padding:  const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: TextField(
+                    controller: usernameController,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      hintText: 'Username',
+                      fillColor: Colors.deepPurple,
+                      filled: true,
+                      hintStyle: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+
                 const SizedBox(height: 10),
 
                 // email textfield
@@ -248,15 +312,48 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 10),
 
 
-                // register button
+                // bod textfield
+                Padding(
+                  padding:  const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: TextField(
+                    controller: dateController,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      hintText: 'Date of Birth',
+                     // prefixIcon: const Icon(Icons.calendar_month_outlined),
+                      fillColor: Colors.deepPurple,
+                      filled: true,
+                      suffixIcon: const Icon(Icons.calendar_month_outlined, color: Colors.white,),
+                      hintStyle: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    keyboardType: TextInputType.datetime,
+                    onTap: (){
+                      _selectDate();
+                    },
+                  ),
+                ),
+                const SizedBox(height: 10),
 
+                // register button
                 SizedBox(
                   width: 200,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         primary: Colors.deepOrangeAccent,
                         elevation: 10,
-                        shape: StadiumBorder()
+                        shape: const StadiumBorder()
                     ),
                     child: const Text(
                       "REGISTER",
@@ -352,7 +449,6 @@ class _RegisterPageState extends State<RegisterPage> {
                    ),
                   ],
                 )
-
               ],
             ),
           ),

@@ -7,6 +7,8 @@ class Message{
   final String receiverId;
   final String message;
   final Timestamp timestamp;
+  final String senderprofilePicUrl;
+  //final String receiverprofilePicUrl;
 
   Message({
     required this.senderId,
@@ -14,7 +16,8 @@ class Message{
     required this.receiverId,
     required this.timestamp,
     required this.message,
-
+    required  this.senderprofilePicUrl,
+    //required this.receiverprofilePicUrl,
 });
 
   // Convert to a map
@@ -25,6 +28,8 @@ class Message{
       'receiverId': receiverId,
       'message': message,
       'timestamp': timestamp,
+      'senderprofilePicUrl' : senderprofilePicUrl,
+      //'receiverprofilePicUrl' : receiverprofilePicUrl
     };
   }
 }

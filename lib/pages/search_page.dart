@@ -34,8 +34,8 @@ class _SearchPageState extends State<SearchPage> {
     });
     user = FirebaseAuth.instance.currentUser;
   }
-
-  String getName(String r){
+*/
+  /*String getName(String r){
     return r.substring(r.indexOf("_"));
   }
 
